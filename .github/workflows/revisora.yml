@@ -1,0 +1,11 @@
+# Faz o papel da jussara-ai neste repositório de teste: aprova o head de todo PR (github-actions[bot]).
+name: revisora
+on:
+  pull_request: { types: [opened, synchronize, reopened] }
+permissions: { pull-requests: write }
+jobs:
+  aprova:
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh pr review "$PR" --approve -R "$GITHUB_REPOSITORY" -b "aprovado no head $SHA"
+        env: { GH_TOKEN: "${{ github.token }}", PR: "${{ github.event.pull_request.number }}", SHA: "${{ github.event.pull_request.head.sha }}" }
